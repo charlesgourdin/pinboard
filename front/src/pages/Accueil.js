@@ -9,7 +9,7 @@ const Accueil = () => {
 
     return (
         <div className='h-100 d-flex flex-column align-items-center justify-content-between'>
-            <h1 className='mt-5'>PINBOARD</h1>
+            <h1 className='mt-5'>P I N B O A R D</h1>
             <div className='w-100 mb-5 d-flex flex-column align-items-center justify-content-end'>
                 {
                     !logType ?

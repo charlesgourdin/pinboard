@@ -37,7 +37,7 @@ const SignIn = () => {
     }
 
     return (
-        <div className='p-3'
+        <div className='p-3 z-depth-3'
             style={{
                 width: '85%',
                 backgroundColor: 'white',
@@ -73,7 +73,7 @@ const SignIn = () => {
                     onChange={updateFields}
                 />
                 <div className="text-center mt-4">
-                    <MDBBtn color="elegant" type="submit" onClick={handleSubmit}>
+                    <MDBBtn color="pink" type="submit" onClick={handleSubmit}>
                         Register
                     </MDBBtn>
                 </div>
