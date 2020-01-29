@@ -2,12 +2,15 @@ import React, { useState, useContext } from 'react';
 import { GlobalContext } from '../providers/GlobalContext'
 import axios from 'axios'
 import { MDBBtn } from 'mdbreact';
+import { useHistory } from 'react-router-dom';
 
 const SignIn = () => {
 
     const { endpoint, setToken } = useContext(GlobalContext)
 
     const [data, updateData] = useState({ email: '', password: '' })
+
+    let history = useHistory();
 
     const updateFields = (event) => {
         let obj = { [event.target.name]: event.target.value }
@@ -16,7 +19,6 @@ const SignIn = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(data)
         axios.post(`${endpoint}/api/users/auth`, { data })
             .then(res => {
                 if (res.status === 200) {
@@ -26,11 +28,10 @@ const SignIn = () => {
                     localStorage.setItem('userId', res.data.id)
                 }
             })
-            // .then(() => {
-            //     history.replace('/psy')
-            // })
+            .then(() => {
+                history.replace('/home')
+            })
             .catch(err => {
-                console.log('ça marche pas')
                 console.log(err.response.data.message)
             })
     }
