@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser')
+const router = require('./routes')
 
 const port = 4000
 
@@ -12,6 +13,8 @@ app.use((req, res, next) => {
     console.log(req.method, req.originalUrl)
     next()
 })
+
+app.use('/api', router)
 
 //Routes
 app.get('/', (req, res) => {
