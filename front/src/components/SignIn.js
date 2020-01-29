@@ -1,7 +1,39 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
+import { GlobalContext } from '../providers/GlobalContext'
+import axios from 'axios'
 import { MDBBtn } from 'mdbreact';
 
 const SignIn = () => {
+
+    const { endpoint, setToken } = useContext(GlobalContext)
+
+    const [data, updateData] = useState({ email: '', password: '' })
+
+    const updateFields = (event) => {
+        let obj = { [event.target.name]: event.target.value }
+        updateData(Object.assign(data, obj))
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(data)
+        axios.post(`${endpoint}/api/users/auth`, { data })
+            .then(res => {
+                if (res.status === 200) {
+                    setToken(res.data)
+                    localStorage.setItem('token', res.data.token)
+                    localStorage.setItem('pseudo', res.data.pseudo)
+                    localStorage.setItem('userId', res.data.id)
+                }
+            })
+            // .then(() => {
+            //     history.replace('/psy')
+            // })
+            .catch(err => {
+                console.log('ça marche pas')
+                console.log(err.response.data.message)
+            })
+    }
 
     return (
         <div className='p-3'
@@ -13,30 +45,34 @@ const SignIn = () => {
             <form>
                 <p className="h4 text-center py-4">Sign in</p>
                 <label
-                    htmlFor="defaultFormCardEmailEx"
+                    htmlFor="email"
                     className="grey-text font-weight-light"
                 >
                     Your email
                             </label>
                 <input
                     type="email"
-                    id="defaultFormCardEmailEx"
+                    id="email"
+                    name="email"
                     className="form-control"
+                    onChange={updateFields}
                 />
                 <br />
                 <label
-                    htmlFor="defaultFormRegisterPasswordEx"
+                    htmlFor="password"
                     className="grey-text"
                 >
                     Your password
                             </label>
                 <input
                     type="password"
-                    id="defaultFormRegisterPasswordEx"
+                    id="password"
+                    name="password"
                     className="form-control"
+                    onChange={updateFields}
                 />
                 <div className="text-center mt-4">
-                    <MDBBtn color="elegant" type="submit">
+                    <MDBBtn color="elegant" type="submit" onClick={handleSubmit}>
                         Register
                     </MDBBtn>
                 </div>

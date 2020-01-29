@@ -1,11 +1,10 @@
-import React, { useContext, useState } from 'react';
-import { GlobalContext } from '../providers/GlobalContext'
+import React, { useState } from 'react';
+// import { GlobalContext } from '../providers/GlobalContext'
 import SignUp from '../components/SignUp';
 import SignIn from '../components/SignIn';
 
 const Accueil = () => {
 
-    const { } = useContext(GlobalContext)
     const [logType, SetLogType] = useState(false)
 
     return (
