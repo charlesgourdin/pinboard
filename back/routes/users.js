@@ -3,6 +3,7 @@ const router = express.Router()
 const jwt = require('jsonwebtoken');
 const verifyToken = require('../helpers/verifyToken')
 const connection = require('../helpers/db')
+const sharp = require('sharp');
 
 
 //GET
@@ -88,7 +89,7 @@ router.post('/auth', (req, res) => {
 })
 
 //Image de profil
-router.post('/upload', (req, res) => {
+router.post('/upload', verifyToken, (req, res) => {
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('No files were uploaded.');
   }
