@@ -2,7 +2,7 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background-color: #2e1fb1;
+    background-color: rgb(255, 255, 255);
 }
 
 .button:hover{
@@ -16,4 +16,18 @@ h1{
 
 .accueil {
     color: white;
+}
+
+.profil-button{
+    background-color: rgb(212, 0, 159);
+    color: white;
+    font-size: 12px;
+    width: 110px;
+    height: 30px;
+    border-radius: 12px;
+    border: none;
+}
+
+.profil-button:focus{
+    outline: 0;
 }
