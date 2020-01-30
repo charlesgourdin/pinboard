@@ -87,4 +87,9 @@ router.post('/auth', (req, res) => {
   })
 })
 
+//Image de profil
+router.post('/upload', (req, res)=>{
+  console.log(req.files.file)
+})
+
 module.exports = router;

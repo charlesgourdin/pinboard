@@ -1,17 +1,44 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { GlobalContext } from '../providers/GlobalContext'
 import NavbarUp from '../components/NavbarUp';
 import NavbarDown from '../components/NavbarDown';
 import profil from '../assets/profil.jpg'
+import { post } from 'axios';
 
 
 
 const Profil = () => {
 
-    const { pseudo } = useContext(GlobalContext)
+    const [modal, displayModal] = useState(true)
+    const [data, loadData] = useState('null')
+
+    const { pseudo, endpoint } = useContext(GlobalContext)
+
+    const setData = (event) => {
+        loadData(event.target.files[0])
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        fileUpload(data).then((response) => {
+            console.log(response.data);
+        })
+    }
+
+    const fileUpload = (file) => {
+        const url = `${endpoint}/api/users/upload`;
+        const formData = new FormData();
+        formData.append('file', file)
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+        return post(url, formData, config)
+    }
 
     return (
-        <div className='w-100 h-100 d-flex flex-column justify-content-between'>
+        <div className='w-100 h-100 d-flex flex-column justify-content-between' style={{ position: 'relative' }}>
             <NavbarUp />
             <div
                 className='h-100 d-flex flex-column align-items-center'
@@ -26,7 +53,8 @@ const Profil = () => {
                             width: '100px',
                             height: '100px',
                             borderRadius: '50%'
-                        }}>
+                        }}
+                        onClick={() => displayModal(true)}>
                         <img src={profil} alt='profil'
                             style={{
                                 maxHeight: '100%'
@@ -53,6 +81,37 @@ const Profil = () => {
                 </div>
             </div>
             <NavbarDown />
+            {modal &&
+                <div
+                    className='z-depth-3 align-self-center d-flex flex-column'
+                    style={{
+                        position: 'absolute',
+                        top: 'calc(100vh/2)',
+                        width: '300px',
+                        height: '120px',
+                        margin: 'auto',
+                        backgroundColor: '#4d4d4d',
+                        borderRadius: '12px'
+                    }}>
+                    <form>
+                        {data === 'null' ?
+                            <>
+                                <label htmlFor='profil' className='modal-button'>
+                                    Modifier la photo de profil
+                                </label>
+                                <input id='profil' name='profil' type='file' onChange={setData} />
+                            </>
+                            :
+                            <>
+                                <button className='modal-button' type='submit' onClick={handleSubmit}>Valider</button>
+                            </>
+
+                        }
+                    </form>
+                    <hr className='w-100 m-0' />
+                    <button className='modal-button' onClick={() => { displayModal(false); loadData('null') }}>Annuler</button>
+                </div>
+            }
         </div>
     )
 }
