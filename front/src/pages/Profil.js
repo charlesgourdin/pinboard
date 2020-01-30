@@ -33,7 +33,8 @@ const Profil = () => {
         formData.append('userId', userId)
         const config = {
             headers: {
-                'content-type': 'multipart/form-data'
+                'content-type': 'multipart/form-data',
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
             }
         }
         return post(url, formData, config)
