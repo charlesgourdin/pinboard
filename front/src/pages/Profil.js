@@ -9,7 +9,7 @@ import { post } from 'axios';
 
 const Profil = () => {
 
-    const [modal, displayModal] = useState(true)
+    const [modal, displayModal] = useState(false)
     const [data, loadData] = useState('null')
 
     const { pseudo, endpoint } = useContext(GlobalContext)
@@ -23,6 +23,8 @@ const Profil = () => {
         fileUpload(data).then((response) => {
             console.log(response.data);
         })
+        displayModal(false);
+        loadData('null');
     }
 
     const fileUpload = (file) => {
