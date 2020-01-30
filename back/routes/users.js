@@ -93,16 +93,22 @@ router.post('/upload', (req, res) => {
     return res.status(400).send('No files were uploaded.');
   }
 
-  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
   let file = req.files.file;
-  let fileName = req.files.file.name
+  const userId = req.body.userId
 
   // Use the mv() method to place the file somewhere on your server
-  file.mv(`./upload/${fileName}`, function (err) {
+  file.mv(`./upload/${userId}-profilPic.jpg`, function (err) {
     if (err)
       return res.status(500).send(err);
 
-    res.send('File uploaded!');
+    connection.query(`UPDATE users SET img = ?  WHERE id = ?`, [`${userId}-profilPic`, userId], (error, response) => {
+      if (error) {
+        console.log(error);
+        res.status(500).json({ flash: error.message })
+      } else {
+        res.send('File uploaded!');
+      }
+    })
   });
 })
 

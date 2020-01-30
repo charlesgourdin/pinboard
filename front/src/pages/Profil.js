@@ -9,10 +9,9 @@ import { post } from 'axios';
 
 const Profil = () => {
 
+    const { pseudo, endpoint, userId } = useContext(GlobalContext)
     const [modal, displayModal] = useState(false)
     const [data, loadData] = useState('null')
-
-    const { pseudo, endpoint } = useContext(GlobalContext)
 
     const setData = (event) => {
         loadData(event.target.files[0])
@@ -31,6 +30,7 @@ const Profil = () => {
         const url = `${endpoint}/api/users/upload`;
         const formData = new FormData();
         formData.append('file', file)
+        formData.append('userId', userId)
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
@@ -107,7 +107,6 @@ const Profil = () => {
                             <>
                                 <button className='modal-button' type='submit' onClick={handleSubmit}>Valider</button>
                             </>
-
                         }
                     </form>
                     <hr className='w-100 m-0' />
