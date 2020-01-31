@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const verifyToken = require('../helpers/verifyToken')
 const connection = require('../helpers/db')
 const sharp = require('sharp');
-
+const fs = require('fs')
 
 //GET
 
@@ -97,10 +97,23 @@ router.post('/upload', verifyToken, (req, res) => {
   let file = req.files.file;
   const userId = req.body.userId
 
-  // Use the mv() method to place the file somewhere on your server
-  file.mv(`./upload/${userId}-profilPic.jpg`, function (err) {
+  // Je stock la photo temporaire
+  file.mv(`./upload/${userId}-profilPicTemp.jpg`, function (err) {
     if (err)
       return res.status(500).send(err);
+
+    //Je retourne la photo, je la stock puis je supprime la photo temporaire
+    sharp(`./upload/${userId}-profilPicTemp.jpg`)
+      .rotate()
+      .toFile(`./upload/${userId}-profilPic.jpg`)
+      .then(() => {
+        fs.unlink(`./upload/${userId}-profilPicTemp.jpg`, (err) => {
+          if (err) {
+            console.error(err)
+            return
+          }
+        })
+      })
 
     connection.query(`UPDATE users SET img = ?  WHERE id = ?`, [`${userId}-profilPic`, userId], (error, response) => {
       if (error) {
@@ -111,6 +124,7 @@ router.post('/upload', verifyToken, (req, res) => {
       }
     })
   });
+
 })
 
 module.exports = router;
