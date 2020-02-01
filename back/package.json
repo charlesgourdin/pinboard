@@ -17,6 +17,7 @@
     "jpeg-autorotate": "^5.0.2",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
+    "nodemon": "^2.0.2",
     "sharp": "^0.24.0"
   }
 }

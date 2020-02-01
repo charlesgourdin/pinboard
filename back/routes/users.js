@@ -70,6 +70,7 @@ router.post('/auth', (req, res) => {
         user = response[0]
         pseudo = user.pseudo
         userId = user.id
+
         jwt.sign({ user }, 'pinboard1234', (err, token) => {
           res.status(200).json({
             token,
@@ -97,32 +98,37 @@ router.post('/upload', verifyToken, (req, res) => {
   let file = req.files.file;
   const userId = req.body.userId
 
-  // Je stock la photo temporaire
-  file.mv(`./upload/${userId}-profilPicTemp.jpg`, function (err) {
-    if (err)
-      return res.status(500).send(err);
+  //Je crée un dossier pour le user
+  fs.mkdir(`./upload/user${userId}`, { recursive: true }, (err) => {
+    if (err) throw err;
 
-    //Je retourne la photo, je la stock puis je supprime la photo temporaire
-    sharp(`./upload/${userId}-profilPicTemp.jpg`)
-      .rotate()
-      .toFile(`./upload/${userId}-profilPic.jpg`)
-      .then(() => {
-        fs.unlink(`./upload/${userId}-profilPicTemp.jpg`, (err) => {
-          if (err) {
-            console.error(err)
-            return
-          }
+    // Je stock la photo temporaire
+    file.mv(`./upload/user${userId}/profilPicTemp.jpg`, function (err) {
+      if (err)
+        return res.status(500).send(err);
+
+      //Je retourne la photo, je la stock puis je supprime la photo temporaire
+      sharp(`./upload/user${userId}/profilPicTemp.jpg`)
+        .rotate()
+        .toFile(`./upload/user${userId}/profilPic.jpg`)
+        .then(() => {
+          fs.unlink(`./upload/user${userId}/profilPicTemp.jpg`, (err) => {
+            if (err) {
+              console.error(err)
+              return
+            }
+          })
         })
-      })
 
-    connection.query(`UPDATE users SET img = ?  WHERE id = ?`, [`${userId}-profilPic`, userId], (error, response) => {
-      if (error) {
-        console.log(error);
-        res.status(500).json({ flash: error.message })
-      } else {
-        res.send('File uploaded!');
-      }
-    })
+      connection.query(`UPDATE users SET img = ?  WHERE id = ?`, [`${userId}-profilPic`, userId], (error, response) => {
+        if (error) {
+          console.log(error);
+          res.status(500).json({ flash: error.message })
+        } else {
+          res.send('File uploaded!');
+        }
+      })
+    });
   });
 
 })

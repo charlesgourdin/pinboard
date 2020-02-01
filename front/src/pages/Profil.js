@@ -2,8 +2,9 @@ import React, { useContext, useState } from 'react';
 import { GlobalContext } from '../providers/GlobalContext'
 import NavbarUp from '../components/NavbarUp';
 import NavbarDown from '../components/NavbarDown';
-import profil from '../assets/profil.jpg'
+// import profil from '../assets/profil.jpg'
 import { post } from 'axios';
+import Image from '../assets/Image';
 
 
 
@@ -58,11 +59,7 @@ const Profil = () => {
                             borderRadius: '50%'
                         }}
                         onClick={() => displayModal(true)}>
-                        <img src={profil} alt='profil'
-                            style={{
-                                maxHeight: '100%'
-                            }}
-                        />
+                        <Image src={`profil/${userId}`} alt={'profil'} style={{ maxHeight: '100%' }} />
                     </div>
                     <h2 className='m-0 ml-3'>{pseudo}</h2>
                 </div>

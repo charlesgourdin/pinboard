@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const router = require('./routes')
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
+const verifyToken = require('./helpers/verifyToken')
 
 
 const port = 4000
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(fileUpload());
+app.use('/images', express.static('upload'))
 
 app.use((req, res, next) => {
     console.log(req.method, req.originalUrl)
