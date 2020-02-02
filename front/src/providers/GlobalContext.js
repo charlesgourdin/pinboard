@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { defaultProfil } from '../assets/defaultProfil.jpg'
-// import axios from 'axios';
+import axios from 'axios';
 export const GlobalContext = React.createContext()
 
 class GlobalProvider extends Component {
@@ -12,18 +12,29 @@ class GlobalProvider extends Component {
             // endpoint: "http://192.168.146.52:4000",
             pseudo: localStorage.getItem("pseudo") || '',
             userId: localStorage.getItem('userId') || null,
+            searchResult: [],
             userProfilImg: defaultProfil,
-            setToken: this.setToken
+            setToken: this.setToken,
+            searchUser : this.searchUser
         }
     }
 
     changerUserProfilImg = (image) => {
-        this.setState({userProfilImg: image})
+        this.setState({ userProfilImg: image })
     }
 
     setToken = (data) => {
         this.setState({ pseudo: data.pseudo, userId: data.id })
         this.token = data.token
+    }
+
+    searchUser = (search) => {
+        axios.get(`${this.state.endpoint}/api/search/${search}`)
+            .then(res => {
+                console.log(res.data)
+                const searchResult = res.data;
+                this.setState({ searchResult });
+            })
     }
 
     render() {

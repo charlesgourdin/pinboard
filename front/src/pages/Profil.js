@@ -20,7 +20,8 @@ const Profil = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        fileUpload(data).then((response) => {
+        fileUpload(data)
+        .then((response) => {
             console.log(response.data);
         })
         displayModal(false);

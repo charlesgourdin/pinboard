@@ -1,5 +1,6 @@
 import React from 'react'
-import {MDBIcon} from 'mdbreact'
+import { MDBIcon } from 'mdbreact'
+import { Link } from 'react-router-dom'
 
 const NavbarUp = () => {
 
@@ -18,7 +19,9 @@ const NavbarUp = () => {
                     margin: '0 0 0 12px'
                 }}
             >P I N B O A R D</h1>
-            <MDBIcon icon="user-circle" size='2x'className='white-text mr-3' />
+            <Link to='/home'>
+                <MDBIcon icon="user-circle" size='2x' className='white-text mr-3' />
+            </Link>
         </div>
     )
 }

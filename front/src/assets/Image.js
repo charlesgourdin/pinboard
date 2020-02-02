@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const Image = ({ src, alt, style }) => {
 
-    const { endpoint, userProfilImg } = useContext(GlobalContext)
+    const { endpoint } = useContext(GlobalContext)
 
     const [image, setImage] = useState(null)
 
