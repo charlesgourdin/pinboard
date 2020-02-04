@@ -3,13 +3,14 @@ const router = express.Router()
 const jwt = require('jsonwebtoken');
 const verifyToken = require('../helpers/verifyToken')
 const connection = require('../helpers/db')
-const sharp = require('sharp');
-const fs = require('fs')
+const base64Img = require('base64-img')
 
 router.get('/profil/:id', verifyToken, (req, res) => {
     userId = req.params.id
-    res.status(200).json({
-        src: `/user${userId}/profilPic.jpg`
+    const path=`/home/administrateur/Projet/pinboard/back/upload/user${userId}/profilPic.jpg`
+
+    base64Img.base64(path, (err, data)=>{
+        res.send(data)
     })
 })
 

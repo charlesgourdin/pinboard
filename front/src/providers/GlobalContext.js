@@ -8,14 +8,14 @@ class GlobalProvider extends Component {
         super(props)
         this.token = localStorage.getItem("token") || null;
         this.state = {
-            endpoint: "http://192.168.0.21:4000",
-            // endpoint: "http://192.168.146.52:4000",
+            // endpoint: "http://192.168.0.21:4000",
+            endpoint: "http://192.168.146.52:4000",
             pseudo: localStorage.getItem("pseudo") || '',
             userId: localStorage.getItem('userId') || null,
             searchResult: [],
             userProfilImg: defaultProfil,
             setToken: this.setToken,
-            searchUser : this.searchUser
+            searchUser: this.searchUser
         }
     }
 
@@ -35,6 +35,10 @@ class GlobalProvider extends Component {
                 const searchResult = res.data;
                 this.setState({ searchResult });
             })
+    }
+
+    componentDidMount = () => {
+        
     }
 
     render() {
